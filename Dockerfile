@@ -1,6 +1,7 @@
 FROM openjdk:8-jdk-alpine
-LABEL maintainer="SNOMED International <tooling@snomed.org>"
+LABEL maintainer="Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>"
 
+# Set snowstorm version
 ARG SNOWSTORM_VERSION=3.0.3
 
 ARG SUID=1042

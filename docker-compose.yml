@@ -1,5 +1,8 @@
+# Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>
 version: '2.1'
 services:
+  # Using the published docker image for elasticsearch 6.5.4, as this is the latest supported version for snowstorm.
+  # Update the version number according to changes on the IHTSDO snowstorm GitHub https://github.com/IHTSDO/snowstorm/blob/master/docs/getting-started.md
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
     container_name: elasticsearch
@@ -30,15 +33,28 @@ services:
 
 
   snowstorm:
-    image: snomedinternational/snowstorm:latest
+    # Building a new local image from the latest version on https://github.com/IHTSDO/snowstorm/
+    # Specify the latest version number in ./Dockerfile in rule: ARG SNOWSTORM_VERSION=x.x.x
+    image: nictiz/snowstorm:latest
     build: .
     container_name: snowstorm
     depends_on:
       elasticsearch:
         condition: service_healthy
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=true
+    # Read only database:
+    # >> --snowstorm.rest-api.readonly=true
+    # Write allowed: (required for creating the database indices)
+    # >> --snowstorm.rest-api.readonly=false
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false
     networks:
-      - elastic
+      elastic:
+        aliases:
+          - snow
+    healthcheck:
+      test: ["CMD", "wget", "-S", "snow:8080/swagger-ui.html"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
     ports:
       - 8081:8080
 
