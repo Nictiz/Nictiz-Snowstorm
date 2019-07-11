@@ -1,0 +1,46 @@
+version: '2.1'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+    container_name: elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./elastic:/usr/share/elasticsearch/data
+    networks:
+      elastic:
+        aliases:
+         - es
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://es:9200"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+    ports:
+      - 9200:9200
+    mem_reservation: 4g
+
+
+  snowstorm:
+    image: snomedinternational/snowstorm:latest
+    build: .
+    container_name: snowstorm
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=true
+    networks:
+      - elastic
+    ports:
+      - 8081:8080
+
+networks:
+  elastic:
