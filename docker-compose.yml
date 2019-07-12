@@ -58,7 +58,7 @@ services:
       timeout: 1s
       retries: 60
     ports:
-      - 8081:8080
+      - 8080:8080
 
 networks:
   elastic:

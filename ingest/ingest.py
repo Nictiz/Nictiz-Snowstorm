@@ -6,7 +6,6 @@ from time import sleep
 
 branchPath  = sys.argv[1]
 shortName   = sys.argv[2]
-# fileName    = "SnomedCT_Netherlands_EditionRelease_PRODUCTION_20190331T120000Z.zip"
 fileName    = sys.argv[3]
 serverUrl   = sys.argv[4]
 importType  = sys.argv[5]
