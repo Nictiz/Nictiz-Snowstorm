@@ -36,7 +36,9 @@ services:
     # Building a new local image from the latest version on https://github.com/IHTSDO/snowstorm/
     # Specify the latest version number in ./Dockerfile in rule: ARG SNOWSTORM_VERSION=x.x.x
     image: nictiz/snowstorm:latest
-    build: .
+    build: 
+      context: ./snowstorm
+      dockerfile: Dockerfile-snowstorm
     container_name: snowstorm
     depends_on:
       elasticsearch:
