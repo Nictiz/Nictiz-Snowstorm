@@ -6,9 +6,14 @@ In the project root, run docker-compose
 [docker-compose up snowstorm]
 This will build the snowstorm container from the IHTSDO GitHub repository. Edit the dockerfile in ./snowstorm to reflect the desired version available on GitHub.
 
+    * [IMPORTANT] Requirements: 
+    docker machine with 4gb memory
+    this docker-compose file will create a folder ./elastic containing the indices for elasticsearch. This folder can be backed up or reused.
+    
 # Snowstorm ingest
 The snowstorm ingest image will take several command line options to quickly add or update codesystems in snowstorm.
 For testing purposes and example only! This script has not been thoroughly tested, and does not contain any error handling.
+Remember to start your snowstorm service with read only disabled! [./docker-compose.yml]
 
 1) Download all release files you want to use in this folder.
 2) cd into the ingest folder ./ingest

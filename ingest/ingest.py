@@ -10,7 +10,7 @@ fileName    = sys.argv[3]
 serverUrl   = sys.argv[4]
 importType  = sys.argv[5]
 
-if True:
+try:
     print("******************* Ingest: *******************\n")
     print("branchPath: {}".format(branchPath))
     print("shortName: {}".format(shortName))
@@ -136,13 +136,14 @@ if True:
                     print("For more information, see the log files of the snowstorm process / container")
                     break
                 sleep(10)
-
+except:
+    print("Some error has occurred during the import process.")
 
 print("\n******************* All existing codesystems: *******************\n")
-url = 'http://{}/codesystems'.format(serverUrl)
-headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-r = requests.get(url, headers=headers)
 try:
+    url = 'http://{}/codesystems'.format(serverUrl)
+    headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
+    r = requests.get(url, headers=headers)
     response = json.loads(r.text)
     print(json.dumps(response, indent=4, sort_keys=True))
 except:
