@@ -2,3 +2,7 @@ elastic
 .idea
 *.zip
 README.DEV.md
+venv
+Nictiz-snowstorm.code-workspace
+ingest/.DS_Store
+.DS_Store

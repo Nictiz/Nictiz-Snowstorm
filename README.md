@@ -24,10 +24,10 @@ Remember to start your snowstorm service with read only disabled! [./docker-comp
     docker build -f Dockerfile-ingest -t nictiz/snowstorm-ingest .
 
 4.1) Run headless, only receives output after finishing:
-    docker run --mount --rm src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest "[BRANCHPATH]" "[SHORTNAME]" "[FILENAME]" [SERVERURL:PORT] [IMPORT-TYPE]
+    docker run --rm --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest "[BRANCHPATH]" "[SHORTNAME]" "[FILENAME]" [SERVERURL:PORT] [IMPORT-TYPE]
 
 4.2) Run interactive, with output to command line:
-    docker run --mount --rm -it src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest "[BRANCHPATH]" "[SHORTNAME]" "[FILENAME]" [SERVERURL:PORT] [IMPORT-TYPE]
+    docker run --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest "[BRANCHPATH]" "[SHORTNAME]" "[FILENAME]" [SERVERURL:PORT] [IMPORT-TYPE]
 
     * Replace:
     [BRANCHPATH] -> ie. MAIN
