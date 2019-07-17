@@ -20,7 +20,9 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
 2) cd into the ingest folder ./ingest
 
 3) You can either use the prebuilt docker image available on the docker repository, or build your own.
+
 3a) Use the prebuilt image nictiz/snowstorm-ingest:latest
+
 3b) Build your own from source:
     docker build -f Dockerfile-ingest -t nictiz/snowstorm-ingest .
 
