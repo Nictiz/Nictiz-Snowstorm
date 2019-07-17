@@ -144,14 +144,21 @@ def importRelease(branchPath, shortName, fileName, importType, serverUrl):
         print("Some error has occurred during the import process.")
         print("Import file:\t", fileName)
 
-# List all release files in directory
-for file in os.listdir("./"):
-    if file.endswith(".zip"):
-        print(os.path.join("", file))
-        
-# Function ref:
-# def importRelease(branchPath, shortName, fileName, importType, serverUrl):
+# Check for a provided filename and codebase
+try:
+    fileName = sys.argv[3]
+    codeBase = sys.argv[4]
+    shortName = sys.argv[5]
+    importRelease(codeBase, shortName, fileName, importType, serverUrl)
+# Otherwise, use all .zip files in the folder
+except:
+    # List all release files in directory
+    for file in os.listdir("/app"):
+        if file.endswith(".zip"):
+            file = os.path.join("", file)
+            importRelease("MAIN", "SNOMEDCT", file, importType, serverUrl)
 
+        
 print("\n******************* All existing codesystems: *******************\n")
 try:
     url = 'http://{}/codesystems'.format(serverUrl)
