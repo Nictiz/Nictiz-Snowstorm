@@ -11,7 +11,7 @@ def import_release(branch_path, short_name, file_name, import_type, server_url):
     # Add the absolute path of the release in the container
     file_name = "/releases/"+file_name
 
-    if True:
+    try:
         # Summarize received parameters
         print("******************* Ingest: *******************\n")
         print("branchPath: {}".format(branch_path))
@@ -125,7 +125,7 @@ def import_release(branch_path, short_name, file_name, import_type, server_url):
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     sleep(10)
-    else:
+    except:
         print("Some error has occurred during the import process.")
         print("Import file:\t", file_name)
 
