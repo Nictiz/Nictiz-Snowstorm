@@ -4,166 +4,150 @@ import time
 import sys, os
 from time import sleep
 
-serverUrl   = sys.argv[1]
-importType  = sys.argv[2]
+server_url   = sys.argv[1]
+import_type  = sys.argv[2]
 
-def importRelease(branchPath, shortName, fileName, importType, serverUrl):
-    try:
+def import_release(branch_path, short_name, file_name, import_type, server_url):
+    # Add the absolute path of the release in the container
+    file_name = "/releases/"+file_name
+
+    if True:
+        # Summarize received parameters
         print("******************* Ingest: *******************\n")
-        print("branchPath: {}".format(branchPath))
-        print("shortName: {}".format(shortName))
-        print("File name: {}".format(fileName))
-        print("Server URL: {}".format(serverUrl))
-        print("Import type: {}".format(importType))
+        print("branchPath: {}".format(branch_path))
+        print("shortName: {}".format(short_name))
+        print("File name: {}".format(file_name))
+        print("Server URL: {}".format(server_url))
+        print("Import type: {}".format(import_type))
 
         print("******************* BranchPath: *******************")
-        url = 'http://{}/codesystems'.format(serverUrl)
-        payload = "{ \
-                        \"branchPath\": \""+branchPath+"\", \
-                        \"shortName\": \""+shortName+"\" \
-                    }"
+        payload = '{ "branchPath": "'+branch_path+'", "shortName": "'+short_name+'" }'
         headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-        r = requests.post(url, data=payload, headers=headers)
+        r = requests.post(server_url+'/codesystems', data=payload, headers=headers)
         # Get the reponse code
         string = str(r)
-        responseCode = string[11:-2]
+        response_code = string[11:-2]
         # Response 201 > branch created successfully
-        if responseCode == "201":
-            print("Successfully created new branch [{}]\nCreating import job.".format(branchPath))
-            url = 'http://{}/imports'.format(serverUrl)
-            payload = '{ \
-                        "branchPath": "'+branchPath+'", \
-                        "createCodeSystemVersion": true, \
-                        "type": "'+importType+'" \
-                    }'
+        if response_code == "201":
+            print("Successfully created new branch [{}]\nCreating import job.".format(branch_path))
+            payload = '{ "branchPath": "'+branch_path+'", "createCodeSystemVersion": true, "type": "'+import_type+'" }'
             headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-            r = requests.post(url, data=payload, headers=headers)
+            r = requests.post(server_url+'/imports', data=payload, headers=headers)
 
+            # Get the import job ID
             headers = r.headers['location']
-            importId = headers.split("/")
-            importId = importId[-1]
+            import_id = headers.split("/")
+            import_id = import_id[-1]
+            # Get the reponse code
             string = str(r)
-            responseCode = string[11:-2]
-            if responseCode == "201":
+            response_code = string[11:-2]
+            if response_code == "201":
                 print("\n******************* Import job creation: *******************")
-                print("Successfully created import job [{}]".format(importId))
-                fileLocation = fileName
-                print("Uploading file [{}]".format(fileName))
+                print("Successfully created import job [{}]".format(import_id))
+                print("Uploading file [{}]".format(file_name))
 
-                url = "http://{}/imports/{}/archive".format(serverUrl, importId)
-                m = MultipartEncoder(
-                    fields={'file': (fileName, open(fileLocation, 'rb'), 'text/plain')}
-                )
-                r = requests.post(url, data=m,
-                                headers={'Content-Type': m.content_type})
-                startTime = time.time()
+                m = MultipartEncoder( fields={'file': (file_name, open(file_name, 'rb'), 'text/plain')})
+                url = "{}/imports/{}/archive".format(server_url, import_id)
+                r = requests.post(url, data=m, headers={'Content-Type': m.content_type})
+                start_time = time.time()
+                # Start infinite loop for import monitoring
                 while True:
-                    url = 'http://{}/imports/{}'.format(serverUrl, importId)
+                    url = '{}/imports/{}'.format(server_url, import_id)
                     headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
                     r = requests.get(url, headers=headers)
                     r = r.json()
 
-                    stopWatch = time.time()
-                    runtime = round(stopWatch - startTime, 0)
+                    stop_watch = time.time()
+                    runtime = round(stop_watch - start_time, 0)
                     print("\n******************* Import job status: *******************")
-                    print("Import file:\t", fileName)
+                    print("Import file:\t", file_name)
                     print("Import type:\t", r['type'])
                     print("BranchPath:\t", r['branchPath'])
                     print("Status:\t\t", r['status'])
                     print("Runtime:\t", runtime, "seconds")
                     if r['status'] == "FAILED":
                         print("\n******************* IMPORT ERROR *******************")
-                        print("Import file:\t", fileName)
+                        print("Import file:\t", file_name)
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     if r['status'] == "COMPLETED":
                         print("\n******************* IMPORT SUCCESS *******************")
-                        print("Import file:\t", fileName)
+                        print("Import file:\t", file_name)
                         print("Duration:\t{} seconds")
                         print("For more information, see the log files of the snowstorm process / container")
+                        break
                     sleep(10)
 
         # Response 400 > branch exists
-        if responseCode == "400":
-            print("branchPath [{}] already exists - uploading".format(branchPath))
-            url = 'http://{}/imports'.format(serverUrl)
-            payload = '{ \
-                        "branchPath": "'+branchPath+'", \
-                        "createCodeSystemVersion": false, \
-                        "type": "'+importType+'" \
-                    }'
+        if response_code == "400":
+            print("branchPath [{}] already exists - uploading".format(branch_path))
+            payload = '{ "branchPath": "'+branch_path+'", "createCodeSystemVersion": false, "type": "'+import_type+'" }'
             headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-            r = requests.post(url, data=payload, headers=headers)
+            r = requests.post(server_url+'/imports', data=payload, headers=headers)
 
             headers = r.headers['location']
-            importId = headers.split("/")
-            importId = importId[-1]
+            import_id = headers.split("/")
+            import_id = import_id[-1]
             string = str(r)
-            responseCode = string[11:-2]
-            if responseCode == "201":
+            response_code = string[11:-2]
+            if response_code == "201":
                 print("\n******************* Import job creation: *******************")
-                print("Successfully created import job [{}]".format(importId))
-                fileLocation = fileName
-                print("Uploading file [{}]".format(fileName))
+                print("Successfully created import job [{}]".format(import_id))
+                print("Uploading file [{}]".format(file_name))
 
-                url = "http://{}/imports/{}/archive".format(serverUrl, importId)
-                m = MultipartEncoder(
-                    fields={'file': (fileName, open(fileLocation, 'rb'), 'text/plain')}
-                )
-                r = requests.post(url, data=m,
-                                headers={'Content-Type': m.content_type})
+                m = MultipartEncoder(fields={'file': (file_name, open(file_name, 'rb'), 'text/plain')})
+                url = "{}/imports/{}/archive".format(server_url, import_id)
+                r = requests.post(url, data=m, headers={'Content-Type': m.content_type})
 
-                startTime = time.time()
-
+                start_time = time.time()
+                # Start infinite loop for import monitoring
                 while True:
-                    url = 'http://{}/imports/{}'.format(serverUrl, importId)
                     headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-                    r = requests.get(url, headers=headers)
+                    r = requests.get(server_url+'/imports/'+import_id, headers=headers)
                     r = r.json()
 
-                    stopWatch = time.time()
-                    runtime = round(stopWatch - startTime, 0)
+                    stop_watch = time.time()
+                    runtime = round(stop_watch - start_time, 0)
                     print("\n******************* Import job status: *******************")
-                    print("Import file:\t", fileName)
+                    print("Import file:\t", file_name)
                     print("Import type:\t", r['type'])
                     print("BranchPath:\t", r['branchPath'])
                     print("Status:\t\t", r['status'])
                     print("Runtime:\t", runtime, "seconds")
                     if r['status'] == "FAILED":
                         print("\n******************* IMPORT ERROR *******************")
-                        print("Import file:\t", fileName)
+                        print("Import file:\t", file_name)
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     if r['status'] == "COMPLETED":
                         print("\n******************* IMPORT SUCCESS *******************")
-                        print("Import file:\t", fileName)
+                        print("Import file:\t", file_name)
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     sleep(10)
-    except:
+    else:
         print("Some error has occurred during the import process.")
-        print("Import file:\t", fileName)
+        print("Import file:\t", file_name)
 
 # Check for a provided filename and codebase
 try:
-    fileName = sys.argv[3]
-    codeBase = sys.argv[4]
-    shortName = sys.argv[5]
-    importRelease(codeBase, shortName, fileName, importType, serverUrl)
+    file_name = sys.argv[3]
+    code_base = sys.argv[4]
+    short_name = sys.argv[5]
+    import_release(code_base, short_name, file_name, import_type, server_url)
 # Otherwise, use all .zip files in the folder
 except:
     # List all release files in directory
-    for file in os.listdir("/app"):
+    for file in os.listdir("/releases"):
         if file.endswith(".zip"):
             file = os.path.join("", file)
-            importRelease("MAIN", "SNOMEDCT", file, importType, serverUrl)
+            import_release("MAIN", "SNOMEDCT", file, import_type, server_url)
 
         
 print("\n******************* All existing codesystems: *******************\n")
 try:
-    url = 'http://{}/codesystems'.format(serverUrl)
     headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
-    r = requests.get(url, headers=headers)
+    r = requests.get(server_url+'/codesystems', headers=headers)
     response = json.loads(r.text)
     print(json.dumps(response, indent=4, sort_keys=True))
 except:
