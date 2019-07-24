@@ -4,9 +4,10 @@ LABEL maintainer="Nictiz <info@snomed.nl>"
 RUN pip install requests_toolbelt
 
 # Create a working directory
+RUN mkdir /releases
 RUN mkdir /app
 WORKDIR /app
 
-COPY ./ingest.py ./ingest.py
+COPY ./ingest.py /app/ingest.py
 
 ENTRYPOINT ["python", "ingest.py"]
