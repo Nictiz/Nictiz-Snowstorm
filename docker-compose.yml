@@ -44,10 +44,11 @@ services:
       elasticsearch:
         condition: service_healthy
     # Read only database:
-    # >> --snowstorm.rest-api.readonly=true
+    #   >> --snowstorm.rest-api.readonly=true
     # Write allowed: (required for creating the database indices)
-    # >> --snowstorm.rest-api.readonly=false
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false
+    #   >> --snowstorm.rest-api.readonly=false
+    # Remove --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac when deploying on AWS
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac
     networks:
       elastic:
         aliases:
@@ -56,7 +57,7 @@ services:
       test: ["CMD", "wget", "-S", "snow:8080/swagger-ui.html"]
       interval: 1s
       timeout: 1s
-      retries: 60
+      retries: 100
     ports:
       - 8080:8080
 
