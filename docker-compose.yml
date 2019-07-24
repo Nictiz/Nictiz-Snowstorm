@@ -48,7 +48,7 @@ services:
     # Write allowed: (required for creating the database indices)
     #   >> --snowstorm.rest-api.readonly=false
     # Remove --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac when deploying on AWS
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
     networks:
       elastic:
         aliases:
