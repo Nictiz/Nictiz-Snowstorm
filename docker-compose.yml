@@ -17,7 +17,7 @@ services:
         soft: 65536
         hard: 65536
     volumes:
-      - ./elastic:/usr/share/elasticsearch/data
+      - elastic_data:/usr/share/elasticsearch/data
     networks:
       elastic:
         aliases:
@@ -63,3 +63,6 @@ services:
 
 networks:
   elastic:
+
+volumes:
+  elastic_data:
