@@ -24,9 +24,9 @@ services:
          - es
     healthcheck:
       test: ["CMD", "curl", "-f", "http://es:9200"]
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 2s
+      retries: 280
     ports:
       - 9200:9200
     mem_reservation: 4g
