@@ -1,5 +1,5 @@
 # Nictiz-Snowstorm
-Modified docker build package for building and deploying snowstorm and elasticsearch containers.
+Modified docker build package for building and deploying snowstorm and elasticsearch containers. This has been tested on OSX and Linux - Docker on Windows requires small adjustments.
 
 # Running snowstorm and elasticsearch from scratch
 This will automatically build the snowstorm container from the IHTSDO GitHub repository. Edit the dockerfile in ./snowstorm to reflect the desired version available on GitHub.
