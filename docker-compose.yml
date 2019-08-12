@@ -34,7 +34,7 @@ services:
 
   snowstorm:
     # Building a new local image from the latest version on https://github.com/IHTSDO/snowstorm/
-    # Specify the latest version number in ./Dockerfile in rule: ARG SNOWSTORM_VERSION=x.x.x
+    # Specify the latest version number in ./snowstorm/Dockerfile-snowstorm in line: ARG SNOWSTORM_VERSION=x.x.x
     image: nictiz/snowstorm:latest
     build: 
       context: ./snowstorm
