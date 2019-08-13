@@ -140,8 +140,9 @@ def importRelease(branchPath, shortName, fileName, importType, serverUrl):
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     sleep(10)
-    except:
-        print("Some error has occurred during the import process.")
+    except Exception as e:
+        print("An error has occurred during the import process.")
+        print("Exception: ",e)
         print("Import file:\t", fileName)
 
 # Check for a provided filename and codebase

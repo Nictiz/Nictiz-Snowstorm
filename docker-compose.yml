@@ -19,7 +19,7 @@ services:
     volumes:
       - ./elastic:/usr/share/elasticsearch/data
     networks:
-      elastic:
+      snowstorm:
         aliases:
          - es
     healthcheck:
@@ -49,7 +49,7 @@ services:
     # >> --snowstorm.rest-api.readonly=false
     entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false
     networks:
-      elastic:
+      snowstorm:
         aliases:
           - snow
     healthcheck:
@@ -61,4 +61,8 @@ services:
       - 8080:8080
 
 networks:
-  elastic:
+  snowstorm:
+    name: snowstorm
+
+volumes:
+  elastic_data:

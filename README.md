@@ -72,6 +72,7 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
     [SHORTNAME] -> SHORTNAME for your codebase, ie. SNOMEDCT
     * For more in-depth explanation of each option, we would like to refer you to the IHTSDO snowstorm GitHub documentation.
 
+
 Appendix A)
 
     To import the Dutch Edition and GMDN/Patient Friendly releases to a fresh database, download the releases to the ./ingest folder, after which the following commands should be sufficient: (as of 7-2019)
@@ -81,3 +82,7 @@ Appendix A)
         docker run --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "Nictiz-Snowstorm\ingest\SnomedCT_GMDNMapRelease_Production_20190331T120000Z.zip" MAIN SNOMEDCT
 
         docker run --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "Nictiz-Snowstorm\ingest\SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
+    
+    2) Snowstorm container running on the same machine as ingest (i.e. localhost)? Add --network=snowstorm to your docker ingest run command:
+        docker run --network=snowstorm --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "Nictiz-Snowstorm\ingest\SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
+
