@@ -125,9 +125,10 @@ def import_release(branch_path, short_name, file_name, import_type, server_url):
                         print("For more information, see the log files of the snowstorm process / container")
                         break
                     sleep(10)
-    except:
-        print("Some error has occurred during the import process.")
-        print("Import file:\t", file_name)
+    except Exception as e:
+        print("An error has occurred during the import process.")
+        print("Exception: ",e)
+        print("Import file:\t", fileName)
 
 # Check for a provided filename and codebase
 try:
@@ -150,5 +151,6 @@ try:
     r = requests.get(server_url+'/codesystems', headers=headers)
     response = json.loads(r.text)
     print(json.dumps(response, indent=4, sort_keys=True))
-except:
+except Exception as e:
     print("json: error")
+    print("Exception: ",e)
