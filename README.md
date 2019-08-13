@@ -47,12 +47,11 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
 
 5)  Import a single specific release
     
-        docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] [IMPORT-TYPE] "[FILENAME]" [CODEBASE] [SHORTNAME]
+        docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 [IMPORT-TYPE] "[FILENAME]" [CODEBASE] [SHORTNAME]
 
     This will import the specified .zip release file in the ./ingest folder to snowstorm/elasticsearch in the specified codebase. This tool has been developed to provide a way to quickly launch an up-to-date snowstorm server. If you wish to use the versioning options of snowstorm, feel free to use this script as an example for your usecase.
 
         Replace:
-        [SERVERURL:PORT] -> ie. https://your.server.com:8080
         [IMPORT-TYPE] -> SNAPSHOT / DELTA / FULL
         [FILENAME] -> Release filename .zip
         [CODEBASE] -> CODEBASE for your import, ie. MAIN
@@ -65,12 +64,11 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
 
     .
 
-        docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] [IMPORT-TYPE]
+        docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 [IMPORT-TYPE]
 
     This will import all .zip release files in the ./ingest folder to snowstorm/elasticsearch in the same codebase. This tool has been developed to provide a way to quickly launch an up-to-date snowstorm server, if you wish to use the codebase and versioning options of snowstorm, feel free to use this script as an example for your usecase.
 
         Replace:
-        [SERVERURL:PORT] -> ie. https://your.server.com:8080
         [IMPORT-TYPE] -> SNAPSHOT / DELTA / FULL
         * For a more in-depth explanation of each option, we would like to refer you to the IHTSDO snowstorm GitHub documentation.
 
@@ -86,8 +84,8 @@ Appendix A)
     
     From ./ingest, run:
 
-    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "SnomedCT_Netherlands_EditionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
+    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_Netherlands_EditionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
 
-    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "SnomedCT_GMDNMapRelease_Production_20190331T120000Z.zip" MAIN SNOMEDCT
+    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_GMDNMapRelease_Production_20190331T120000Z.zip" MAIN SNOMEDCT
 
-    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
+    docker run --rm -it --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
