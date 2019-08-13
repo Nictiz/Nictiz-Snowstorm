@@ -19,7 +19,7 @@ services:
     volumes:
       - elastic_data:/usr/share/elasticsearch/data
     networks:
-      elastic:
+      snowstorm_network:
         aliases:
          - es
     healthcheck:
@@ -50,7 +50,7 @@ services:
     # Remove --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac when deploying on AWS
     entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
     networks:
-      elastic:
+      snowstorm_network:
         aliases:
           - snow
     healthcheck:
@@ -62,7 +62,9 @@ services:
       - 8080:8080
 
 networks:
-  elastic:
+  snowstorm_network:
+    external: false
+    name: snowstorm_network
 
 volumes:
   elastic_data:
