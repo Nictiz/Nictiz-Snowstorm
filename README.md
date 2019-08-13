@@ -83,6 +83,6 @@ Appendix A)
 
         docker run --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "Nictiz-Snowstorm\ingest\SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
     
-    2) Snowstorm container running on the same machine as ingest (i.e. localhost)? Add --network=snowstorm to your docker ingest run command:
+    2) If your Snowstorm container is running on the same machine as the ingest (i.e. localhost)? You may have to add --network=snowstorm to your docker ingest run command:
         docker run --network=snowstorm --rm -it --mount src=$(pwd),target=/app/,type=bind nictiz/snowstorm-ingest [SERVERURL:PORT] SNAPSHOT "Nictiz-Snowstorm\ingest\SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
 
