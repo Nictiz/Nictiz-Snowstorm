@@ -52,6 +52,7 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
     This will import the specified .zip release file in the ./ingest folder to snowstorm/elasticsearch in the specified codebase. This tool has been developed to provide a way to quickly launch an up-to-date snowstorm server. If you wish to use the versioning options of snowstorm, feel free to use this script as an example for your usecase.
 
         Replace:
+        [http://snow:8080] -> your server, ONLY if not running local from the provided docker-compose
         [IMPORT-TYPE] -> SNAPSHOT / DELTA / FULL
         [FILENAME] -> Release filename .zip
         [CODEBASE] -> CODEBASE for your import, ie. MAIN
@@ -69,6 +70,7 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
     This will import all .zip release files in the ./ingest folder to snowstorm/elasticsearch in the same codebase. This tool has been developed to provide a way to quickly launch an up-to-date snowstorm server, if you wish to use the codebase and versioning options of snowstorm, feel free to use this script as an example for your usecase.
 
         Replace:
+        [http://snow:8080] -> your server, ONLY if not running local from the provided docker-compose
         [IMPORT-TYPE] -> SNAPSHOT / DELTA / FULL
         * For a more in-depth explanation of each option, we would like to refer you to the IHTSDO snowstorm GitHub documentation.
 
@@ -80,7 +82,7 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
 
 Appendix A)
 
-    To import the Dutch Edition and GMDN/Patient Friendly releases to a fresh database, download the releases to the ./ingest folder, after which the following commands should be sufficient: (as of 7-2019)
+    To import the Dutch Edition and GMDN/Patient Friendly releases to a fresh database when running from the provided docker-compose file, download the releases to the ./ingest folder, after which the following commands should be sufficient: (as of 7-2019)
     
     From ./ingest, run:
 
