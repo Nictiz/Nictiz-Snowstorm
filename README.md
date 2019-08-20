@@ -88,6 +88,6 @@ Appendix A)
 
     docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_Netherlands_EditionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
 
-    docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_GMDNMapRelease_Production_20190331T120000Z.zip" MAIN SNOMEDCT
+    docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_GMDNMapRelease_Production_20190331T120000Z.zip" MAIN/SNOMEDCT-GMDN SNOMEDCT-GMDN
 
-    docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN SNOMEDCT
+    docker run --rm -it --network snowstorm_network --mount src=$(pwd),target=/releases/,type=bind nictiz/snowstorm-ingest http://snow:8080 SNAPSHOT "SnomedCT_Netherlands_PatientFriendlyExtensionRelease_PRODUCTION_20190331T120000Z.zip" MAIN/SNOMEDCT-NL-PF SNOMEDCT-NL-PF
