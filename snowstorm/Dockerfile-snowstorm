@@ -32,4 +32,4 @@ RUN chown -R snowstorm:snowstorm /app
 # Run as the snowstorm user.
 USER snowstorm
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","snowstorm.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","snowstorm.jar","spring.servlet.multipart.max-file-size=1000MB","spring.servlet.multipart.max-request-size=1000MB","logging.level.org.springframework=DEBUG"]
