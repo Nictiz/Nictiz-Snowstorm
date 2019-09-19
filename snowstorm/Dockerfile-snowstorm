@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 LABEL maintainer="Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>"
 
 # Set snowstorm version
-ARG SNOWSTORM_VERSION=3.0.3
+ARG SNOWSTORM_VERSION=4.1.0
 
 ARG SUID=1042
 ARG SGID=1042
@@ -32,4 +32,4 @@ RUN chown -R snowstorm:snowstorm /app
 # Run as the snowstorm user.
 USER snowstorm
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","snowstorm.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","snowstorm.jar","spring.servlet.multipart.max-file-size=1000MB","spring.servlet.multipart.max-request-size=1000MB","logging.level.org.springframework=DEBUG"]
