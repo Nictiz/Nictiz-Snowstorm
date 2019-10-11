@@ -58,18 +58,16 @@ services:
       snowstorm_network:
         aliases:
           - snow
-    healthcheck:
-      test: ["CMD", "wget", "-S", "snow:8080/swagger-ui.html"]
-      interval: 1s
-      timeout: 1s
-      retries: 100
     ports:
       - 8080:8080
-
+    healthcheck:
+      test: ["CMD", "wget", "-S", "http://snow:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 280
 networks:
   snowstorm_network:
     external: false
     name: snowstorm_network
-
 volumes:
   elastic_data:
