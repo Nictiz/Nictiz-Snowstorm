@@ -1,8 +1,8 @@
 # Nictiz-Snowstorm
-Modified docker build package for building and deploying snowstorm and elasticsearch containers. This has been tested on OSX and Linux - Docker on Windows requires small adjustments.
+Modified docker-compose for deploying snowstorm and elasticsearch containers. This has been tested on OSX and Linux - Docker on Windows requires small adjustments.
 
 # Running snowstorm and elasticsearch from scratch
-This will automatically build the snowstorm container from the IHTSDO GitHub repository. Edit the dockerfile in ./snowstorm to reflect the desired version available on GitHub.
+This will automatically pull the snowstorm container from the IHTSDO GitHub repository.
 
     *[IMPORTANT] Requirements: 
     docker machine with >=4GB memory
@@ -62,6 +62,7 @@ Remember to start your snowstorm service with read only disabled! [edit in ./doc
 6)  Import all files in the folder
     
         *[IMPORTANT] As extensions should be loaded after the full (inter)national edition, it is recommended to first import the edition using the method described in step 5, after which all remaining extensions can be imported using this method.
+
 
     .
 
