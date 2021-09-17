@@ -46,6 +46,8 @@ services:
     environment:
       - VIRTUAL_HOST=termservice.test-nictiz.nl
       - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=termservice.test-nictiz.nl
+      - LETSENCRYPT_EMAIL=mertens@nictiz.nl
 
   snowstorm:
     image: snomedinternational/snowstorm:latest
