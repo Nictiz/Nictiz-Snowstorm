@@ -79,7 +79,7 @@ networks:
   snowstorm_network:
     external: false
     name: snowstorm_network
-   proxy:
+  proxy:
     external: true
 volumes:
   elastic_data:
