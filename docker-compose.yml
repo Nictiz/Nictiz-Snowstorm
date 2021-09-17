@@ -33,6 +33,19 @@ services:
       - 9200:9200
     mem_reservation: 4g
 
+  nginx:
+    # image: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 80
+    networks:
+      - snowstorm_network
+      - proxy
+    environment:
+      - VIRTUAL_HOST=termservice.test-nictiz.nl
+      - VIRTUAL_PORT=80
 
   snowstorm:
     image: snomedinternational/snowstorm:latest
