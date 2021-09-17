@@ -34,9 +34,6 @@ services:
 
   snowstorm:
     image: snomedinternational/snowstorm:latest
-    build: 
-      context: ./snowstorm
-      dockerfile: Dockerfile-snowstorm
     container_name: snowstorm
     depends_on:
       elasticsearch:
