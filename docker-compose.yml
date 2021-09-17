@@ -1,10 +1,10 @@
 # Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>
 version: '2.1'
 services:
-  # Using the published docker image for elasticsearch 6.8.3, as this is the latest supported version for snowstorm.
+  # Using the published docker image for elasticsearch 7.7.0, as this is the latest supported version for snowstorm.
   # Update the version number according to changes on the IHTSDO snowstorm GitHub https://github.com/IHTSDO/snowstorm/blob/master/docs/getting-started.md
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     container_name: elasticsearch
     environment:
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
