@@ -10,7 +10,7 @@ services:
       - node.name=snowstorm
       - cluster.name=snowstorm-cluster
       - cluster.initial_master_nodes=snowstorm
-      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+      - "ES_JAVA_OPTS=-Xms8g -Xmx8g"
     ulimits:
       memlock:
         soft: -1
@@ -60,9 +60,9 @@ services:
     # Write allowed: (required for creating the database indices)
     #   >> --snowstorm.rest-api.readonly=false
     # Remove --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac when deploying on AWS
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar
+    entrypoint: java -Xms6g -Xmx6g -jar snowstorm.jar
       --elasticsearch.urls=http://es:9200
-      --snowstorm.rest-api.readonly=false
+      --snowstorm.rest-api.readonly=true
       --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration 
       --spring.servlet.multipart.max-file-size=1000MB
       --spring.servlet.multipart.max-request-size=1000MB
@@ -72,11 +72,6 @@ services:
           - snow
     ports:
       - 8080:8080
-    healthcheck:
-      test: ["CMD", "wget", "-S", "http://snow:8080"]
-      interval: 10s
-      timeout: 10s
-      retries: 280
 networks:
   snowstorm_network:
     external: false
@@ -85,3 +80,4 @@ networks:
     external: true
 volumes:
   elastic_data:
+    external: true
