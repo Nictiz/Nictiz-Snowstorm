@@ -80,4 +80,3 @@ networks:
     external: true
 volumes:
   elastic_data:
-    external: true
