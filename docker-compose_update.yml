@@ -1,0 +1,61 @@
+# Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>
+version: '2.1'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    container_name: elasticsearch
+    environment:
+      - node.name=snowstorm
+      - cluster.name=snowstorm-cluster
+      - cluster.initial_master_nodes=snowstorm
+      - "ES_JAVA_OPTS=-Xms8g -Xmx8g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+    networks:
+      snowstorm_network:
+        aliases:
+          - es
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://es:9200"]
+      interval: 10s
+      timeout: 2s
+      retries: 280
+    mem_reservation: 4g
+
+
+  snowstorm:
+    image: snomedinternational/snowstorm:latest
+    container_name: snowstorm
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    # Read only database:
+    #   >> --snowstorm.rest-api.readonly=true
+    # Write allowed: (required for creating the database indices)
+    #   >> --snowstorm.rest-api.readonly=false
+    # Remove --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStac when deploying on AWS
+    entrypoint: java -Xms6g -Xmx6g -jar snowstorm.jar
+      --elasticsearch.urls=http://es:9200 --snowstorm.rest-api.readonly=false --snowstorm.rest-api.allowUnlimitedConceptPagination=true --spring.autoconfigure.exclude=org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration --spring.servlet.multipart.max-file-size=1000MB --spring.servlet.multipart.max-request-size=1000MB
+    networks:
+      snowstorm_network:
+        aliases:
+          - snow
+    expose:
+      - 8080
+
+networks:
+  snowstorm_network:
+    external: false
+    name: snowstorm_network
+  proxy:
+    external: true
+volumes:
+  elastic_data:
+    external: true
