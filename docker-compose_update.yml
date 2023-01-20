@@ -1,4 +1,4 @@
-# Nictiz <info@snomed.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>
+# Nictiz <info@snomed.nl> or <terminologie@nictiz.nl>, adapted from https://github.com/IHTSDO/snowstorm/ by SNOMED International <tooling@snomed.org>
 version: '2.1'
 services:
   elasticsearch:
